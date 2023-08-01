@@ -1,7 +1,7 @@
 package vtag
 
 import (
-	"github.com/bytedance/sonic"
+	"encoding/json"
 	"github.com/vela-ssoc/vela-kit/auxlib"
 	"github.com/vela-ssoc/vela-kit/lua"
 )
@@ -14,7 +14,7 @@ func (t *tag) AssertFunction() (*lua.LFunction, bool) { return nil, false }
 func (t *tag) Peek() lua.LValue                       { return t }
 
 func (t *tag) Byte() []byte {
-	chunk, err := sonic.Marshal(t)
+	chunk, err := json.Marshal(t)
 	if err != nil {
 		return []byte("[]")
 	}
@@ -28,7 +28,26 @@ func (t *tag) Range(L *lua.LState, handle func(string)) int {
 	}
 
 	for i := 1; i <= n; i++ {
-		handle(L.CheckString(i))
+		item := L.Get(i)
+		switch item.Type() {
+		case lua.LTNil:
+			return 0
+		case lua.LTSlice:
+			s, ok := item.(lua.Slice)
+			k := len(s)
+			if k == 0 {
+				return 0
+			}
+
+			if ok {
+				for _, v := range s {
+					handle(v.String())
+				}
+			}
+
+		default:
+			handle(L.CheckString(i))
+		}
 	}
 	return 0
 }

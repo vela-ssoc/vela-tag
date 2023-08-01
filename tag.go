@@ -3,7 +3,6 @@ package vtag
 import (
 	"fmt"
 	"github.com/vela-ssoc/vela-kit/audit"
-	"github.com/vela-ssoc/vela-kit/opcode"
 )
 
 type tag struct {
@@ -57,7 +56,8 @@ func (t *tag) send() error {
 	if len(t.Del)+len(t.Add) == 0 {
 		return fmt.Errorf("tag empty")
 	}
-	err := xEnv.TnlSend(opcode.OpTag, t)
+
+	err := xEnv.Push("/api/v1/broker/operate/tag", t)
 	if err != nil {
 		audit.Errorf("send tag fail %v", t).From("vela-tag").Put()
 	}
