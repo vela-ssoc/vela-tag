@@ -9,23 +9,23 @@ var xEnv vela.Environment
 
 func newLuaTagL(L *lua.LState) int {
 	L.CheckCodeVM("vela-tag")
-	L.Push(newTag())
+	L.Push(NewTag())
 	return 1
 }
 
 func newLuaSetTagL(L *lua.LState) int {
 	L.CheckCodeVM("vela-tag")
-	t := newTag()
-	t.Range(L, t.addTag)
-	t.send()
+	t := NewTag()
+	t.Range(L, t.AddTag)
+	t.Send()
 	return 0
 }
 
 func newLuaDelTagL(L *lua.LState) int {
 	L.CheckCodeVM("vela-tag")
-	t := newTag()
+	t := NewTag()
 	t.Range(L, t.delTag)
-	t.send()
+	t.Send()
 	return 0
 }
 

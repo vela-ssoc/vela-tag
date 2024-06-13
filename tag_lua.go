@@ -53,7 +53,7 @@ func (t *tag) Range(L *lua.LState, handle func(string)) int {
 }
 
 func (t *tag) addL(L *lua.LState) int {
-	return t.Range(L, t.addTag)
+	return t.Range(L, t.AddTag)
 }
 
 func (t *tag) delL(L *lua.LState) int {
@@ -61,7 +61,7 @@ func (t *tag) delL(L *lua.LState) int {
 }
 
 func (t *tag) sendL(L *lua.LState) int {
-	t.send()
+	t.Send()
 	return 0
 }
 

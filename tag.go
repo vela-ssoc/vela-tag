@@ -10,11 +10,11 @@ type tag struct {
 	Add []string `json:"add"`
 }
 
-func newTag() *tag {
+func NewTag() *tag {
 	return &tag{}
 }
 
-func contain(dst []string, tv string) bool {
+func Contain(dst []string, tv string) bool {
 	n := len(dst)
 	if n == 0 {
 		return false
@@ -28,12 +28,12 @@ func contain(dst []string, tv string) bool {
 	return false
 }
 
-func (t *tag) addTag(tv string) {
+func (t *tag) AddTag(tv string) {
 	if len(tv) == 0 {
 		return
 	}
 
-	if contain(t.Add, tv) {
+	if Contain(t.Add, tv) {
 		return
 	}
 
@@ -45,14 +45,14 @@ func (t *tag) delTag(tv string) {
 		return
 	}
 
-	if contain(t.Del, tv) {
+	if Contain(t.Del, tv) {
 		return
 	}
 
 	t.Del = append(t.Del, tv)
 }
 
-func (t *tag) send() error {
+func (t *tag) Send() error {
 	if len(t.Del)+len(t.Add) == 0 {
 		return fmt.Errorf("tag empty")
 	}
